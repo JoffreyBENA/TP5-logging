@@ -26,73 +26,73 @@ gcloud services enable dns.googleapis.com --project=$GCP_PROJECT
 gcloud services enable run.googleapis.com --project=$GCP_PROJECT
 gcloud services enable sourcerepo.googleapis.com --project=$GCP_PROJECT
 
-# # # --------------------------------------------------------------------
+# --------------------------------------------------------------------
 
-# echo -e "\033[1;32;4m-- Etape 2/8: Vérification de la présence de la clé ssh et Génération si nécessaire --\033[0m"
+echo -e "\033[1;32;4m-- Etape 2/8: Vérification de la présence de la clé ssh et Génération si nécessaire --\033[0m"
 
-# #!/bin/bash
+#!/bin/bash
 
-# # Chemin du dossier .ssh
-# ssh_dir="$HOME/.ssh"
+# Chemin du dossier .ssh
+ssh_dir="$HOME/.ssh"
 
-# # Vérifier si le dossier .ssh existe
-# if [ ! -d "$ssh_dir" ]; then
-#     # Si le dossier n'existe pas, le créer
-#     mkdir "$ssh_dir"
-# fi
+# Vérifier si le dossier .ssh existe
+if [ ! -d "$ssh_dir" ]; then
+    # Si le dossier n'existe pas, le créer
+    mkdir "$ssh_dir"
+fi
 
-# # Vérifier si une clé SSH existe déjà
-# if [ ! -f "$ssh_dir/id_rsa" ]; then
-#     # Si la clé n'existe pas, générer une nouvelle clé SSH
-#     ssh-keygen -t rsa -b 4096
-# else
-#     echo "Une clé SSH existe déjà dans le dossier $ssh_dir."
-# fi
+# Vérifier si une clé SSH existe déjà
+if [ ! -f "$ssh_dir/id_rsa" ]; then
+    # Si la clé n'existe pas, générer une nouvelle clé SSH
+    ssh-keygen -t rsa -b 4096
+else
+    echo "Une clé SSH existe déjà dans le dossier $ssh_dir."
+fi
 
-# # --------------------------------------------------------------------
+# --------------------------------------------------------------------
 
-# echo -e "\033[1;32;4m-- Etape 3/8: Vérification de Terrafrom et Installation si nécessaire --\033[0m"
+echo -e "\033[1;32;4m-- Etape 3/8: Vérification de Terrafrom et Installation si nécessaire --\033[0m"
 
-# # Installation de Terraform s'il n'est pas installé
-# if ! command -v terraform &> /dev/null; then
-#     echo "Terraform n'est pas installé. Installation en cours..."
-#     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-#     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list >/dev/null
-#     sudo apt update
-#     sudo apt install terraform
-#     if [ $? -eq 0 ]; then
-#         echo -e "\033[33mTerraform a été installé avec succès.\033[0m"
-#     else
-#         echo -e "\033[31mL'installation de Terraform a échoué.\033[0m"
-#         exit 1
-#     fi
-# else
-#     echo -e "\033[31mTerraform est déjà installé.\033[0m"
-# fi
+# Installation de Terraform s'il n'est pas installé
+if ! command -v terraform &> /dev/null; then
+    echo "Terraform n'est pas installé. Installation en cours..."
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list >/dev/null
+    sudo apt update
+    sudo apt install terraform
+    if [ $? -eq 0 ]; then
+        echo -e "\033[33mTerraform a été installé avec succès.\033[0m"
+    else
+        echo -e "\033[31mL'installation de Terraform a échoué.\033[0m"
+        exit 1
+    fi
+else
+    echo -e "\033[31mTerraform est déjà installé.\033[0m"
+fi
 
-# # Vérification de la présence des fichiers Terraform
-# if [ ! -d "terraform" ] || [ ! -f "terraform/variables.tf" ] || [ ! -f "terraform/main.tf" ] || [ ! -f "terraform/vpc/variables.tf" ] || [ ! -f "terraform/vpc/main.tf" ] || [ ! -f "terraform/gke-cluster/variables.tf" ] || [ ! -f "terraform/gke-cluster/main.tf" ] || [ ! -f "terraform/service_account/variables.tf" ] || [ ! -f "terraform/service_account/main.tf" ] || [ ! -f "terraform/firewall/variables.tf" ] || [ ! -f "terraform/firewall/main.tf" ]; then
-#     echo -e "\033[33mCertains fichiers Terraform sont manquants. Clonage du référentiel...\033[0m"
-#     git clone https://gitlab.com/JoffreyBENA/TP4-CD.git
-#     cd TP4-CD/deploy-prod/terraform
-# else
-#     cd terraform
-# fi
+# Vérification de la présence des fichiers Terraform
+if [ ! -d "terraform" ] || [ ! -f "terraform/variables.tf" ] || [ ! -f "terraform/main.tf" ] || [ ! -f "terraform/vpc/variables.tf" ] || [ ! -f "terraform/vpc/main.tf" ] || [ ! -f "terraform/gke-cluster/variables.tf" ] || [ ! -f "terraform/gke-cluster/main.tf" ] || [ ! -f "terraform/service_account/variables.tf" ] || [ ! -f "terraform/service_account/main.tf" ] || [ ! -f "terraform/firewall/variables.tf" ] || [ ! -f "terraform/firewall/main.tf" ]; then
+    echo -e "\033[33mCertains fichiers Terraform sont manquants. Clonage du référentiel...\033[0m"
+    git clone https://gitlab.com/JoffreyBENA/TP4-CD.git
+    cd TP4-CD/deploy-prod/terraform
+else
+    cd terraform
+fi
 
-# # --------------------------------------------------------------------
+# --------------------------------------------------------------------
 
-# echo -e "\033[1;32;4m-- Etape 4/8: Initialisation de Terrafrom et Création des machines --\033[0m"
+echo -e "\033[1;32;4m-- Etape 4/8: Initialisation de Terrafrom et Création des machines --\033[0m"
 
-# # Initialisation de Terraform si c'est la première exécution
-# if [ ! -d ".terraform" ]; then
-#     echo -e "\033[33mInitialisation de Terraform...\033[0m"
-#     terraform init
-# fi
+# Initialisation de Terraform si c'est la première exécution
+if [ ! -d ".terraform" ]; then
+    echo -e "\033[33mInitialisation de Terraform...\033[0m"
+    terraform init
+fi
 
-# # Création des machines avec Terraform
-# echo -e "\033[33mCréation des machines avec Terraform...\033[0m"
-# terraform apply -auto-approve
-# cd ..
+# Création des machines avec Terraform
+echo -e "\033[33mCréation des machines avec Terraform...\033[0m"
+terraform apply -auto-approve
+cd ..
 
 # # --------------------------------------------------------------------
 # echo -e "\033[1;32;4m-- Etape 4/8: Génération des inventaires dynamiques Ansible  --\033[0m"
@@ -177,28 +177,28 @@ gcloud container clusters get-credentials $CLUSTER_NAME --zone=$REGION --project
 #!/bin/bash
 
 # Installation d'Elasticsearch
-kubectl apply -f ./kubernetes/elasticsearch/elasticsearch-deployment.yaml
-kubectl apply -f ./kubernetes/elasticsearch/elasticsearch-service.yaml
+kubectl apply -f ../kubernetes/elasticsearch/elasticsearch-deployment.yaml
+kubectl apply -f ../kubernetes/elasticsearch/elasticsearch-service.yaml
 
 # Installation de Logstash
-kubectl apply -f ./kubernetes/logstash/logstash-configmap.yaml
-kubectl apply -f ./kubernetes/logstash/logstash-deployment.yaml
-kubectl apply -f ./kubernetes/logstash/logstash-service.yaml
+kubectl apply -f ../kubernetes/logstash/logstash-configmap.yaml
+kubectl apply -f ../kubernetes/logstash/logstash-deployment.yaml
+kubectl apply -f ../kubernetes/logstash/logstash-service.yaml
 
 # Installation de Filebeat
-kubectl apply -f ./kubernetes/filebeat/filebeat-config.yaml
-kubectl apply -f ./kubernetes/filebeat/filebeat-deployment.yaml
+kubectl apply -f ../kubernetes/filebeat/filebeat-config.yaml
+kubectl apply -f ../kubernetes/filebeat/filebeat-deployment.yaml
 
 # Installation de Kibana
-kubectl apply -f ./kubernetes/kibana/kibana-deployment.yaml
-kubectl apply -f ./kubernetes/kibana/kibana-service.yaml
+kubectl apply -f ../kubernetes/kibana/kibana-deployment.yaml
+kubectl apply -f ../kubernetes/kibana/kibana-service.yaml
 
 # Déploiement de l'application Nginx
-kubectl apply -f ./kubernetes/nginx/nginx-deployment.yml
-kubectl apply -f ./kubernetes/nginx/nginx-service.yml
+kubectl apply -f ../kubernetes/nginx/nginx-deployment.yml
+kubectl apply -f ../kubernetes/nginx/nginx-service.yml
 
 # Création d'une pipeline Logstash pour les logs Nginx
-kubectl apply -f ./kubernetes/logstash/logstash-nginx-pipeline.conf
+kubectl apply -f ../kubernetes/logstash/logstash-nginx-pipeline.conf
 
 # Création d'un modèle d'index Elasticsearch pour les logs Nginx (personnalisé selon vos besoins)
 
@@ -214,7 +214,15 @@ kubectl apply -f ./kubernetes/logstash/logstash-nginx-pipeline.conf
 
 echo "Installation et configuration terminées."
 
+# --------------------------------------------------------------------
+
+# Ajoutez une pause de 10 secondes
+sleep 10
+
+--------------------------------------------------------------------
+
 kubectl get deployments
 kubectl get pods
 kubectl get services
+
 # kubectl config unset current-context

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: elasticsearch
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: elasticsearch
@@ -20,7 +20,8 @@ spec:
             - containerPort: 9300
           resources:
             limits:
-              memory: 2Gi
-              cpu: "1"
-            requests:
               memory: 1Gi
+              cpu: 500m
+            requests:
+              memory: 500Mi
+              cpu: 250m

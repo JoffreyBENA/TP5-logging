@@ -19,14 +19,14 @@ spec:
         - containerPort: 5044
         volumeMounts:
         - name: logstash-config
-          mountPath: /usr/share/logstash/config
+          mountPath: ./logstash-configmap.yaml
         resources:
           limits:
-            memory: "2Gi"  # Limite maximale de mémoire
-            cpu: "1000m"   # Limite maximale de CPU
+            memory: 1Gi
+            cpu: 500m
           requests:
-            memory: "1Gi"  # Demande minimale de mémoire
-            cpu: "500m"    # Demande minimale de CPU
+            memory: 500Mi
+            cpu: 250m
       volumes:
       - name: logstash-config
         configMap:

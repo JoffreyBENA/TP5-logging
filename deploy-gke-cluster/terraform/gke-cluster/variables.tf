@@ -7,7 +7,7 @@ variable "cluster_name" {
 variable "machine_type" {
     type        = string
     description = "Type de machine du nœud GKE"
-    default     = "e2-medium"
+    default     = "e2-standard-2"
 }
 
 variable "region" {
@@ -50,7 +50,7 @@ variable "service_account_email" {
 variable "node_count" {
     type        = number
     description = "Nombre de nœuds du cluster GKE"
-    default     = 3
+    default     = 1
 }
 
 variable "disk_size_gb" {
