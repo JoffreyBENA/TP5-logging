@@ -50,13 +50,13 @@ variable "service_account_email" {
 variable "node_count" {
     type        = number
     description = "Nombre de nœuds du cluster GKE"
-    default     = 1
+    default     = 3
 }
 
 variable "disk_size_gb" {
     type        = number
     description = "Taille du disque du nœud GKE"
-    default     = 40
+    default     = 20
 }
 
 variable "custom_node_names" {

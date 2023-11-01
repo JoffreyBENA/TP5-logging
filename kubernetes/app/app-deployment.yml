@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mon-app-deployment
+spec:
+  replicas: 3  # Vous pouvez ajuster le nombre de répliques selon vos besoins.
+  selector:
+    matchLabels:
+      app: mon-app
+  template:
+    metadata:
+      labels:
+        app: mon-app
+    spec:
+      containers:
+        - name: mon-app-container
+          image: gcr.io/exalted-airfoil-402614/joffreyb/imagepythontp3-gitlabci:v1.0  # Remplacez ceci par le chemin de votre image GCR.
+          ports:
+            - containerPort: 8080  # Port sur lequel votre application écoute.
+          env:
+            - name: ENV
+              value: "prod"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+
+# ---
+# apiVersion: "apps/v1"
+# kind: "Deployment"
+# metadata:
+#   name: "my-app"
+#   namespace: "default"
+#   labels:
+#     app: "my-app"
+# spec:
+#   replicas: 3
+#   selector:
+#     matchLabels:
+#       app: "my-app"
+#   template:
+#     metadata:
+#       labels:
+#         app: "my-app"
+#     spec:
+#       containers:
+#       - name: "imagepythontp3-gitlabci-1"
+#         image: "gcr.io/exalted-airfoil-402614/joffreyb/imagepythontp3-gitlabci:v1.0"
+#         resources:
+#           requests:
+#             memory: "64Mi"
+#             cpu: "250m"
+#           limits:
+#             memory: "128Mi"
+#             cpu: "500m"

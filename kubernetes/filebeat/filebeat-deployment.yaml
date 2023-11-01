@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: filebeat
+spec:
+  selector:
+    matchLabels:
+      app: filebeat
+  template:
+    metadata:
+      labels:
+        app: filebeat
+    spec:
+      containers:
+      - name: filebeat
+        image: docker.elastic.co/beats/filebeat:8.0.0
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "100m"
+          requests:
+            memory: "100Mi"
+            cpu: "50m"
+        volumeMounts:
+        - name: config
+          mountPath: /etc/filebeat
+        - name: data
+          mountPath: /var/lib/filebeat/data
+        - name: varlog
+          mountPath: /var/log
+        - name: root
+          mountPath: /rootfs
+      volumes:
+      - name: config
+        configMap:
+          name: filebeat-config
+          defaultMode: 0600
+      - name: data
+        emptyDir: {}
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: root
+        hostPath:
+          path: /

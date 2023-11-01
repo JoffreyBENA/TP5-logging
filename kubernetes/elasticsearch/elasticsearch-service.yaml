@@ -1,0 +1,32 @@
+# --- # Cluster IP
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: elasticsearch
+# spec:
+#   selector:
+#     app: elasticsearch
+#   ports:
+#     - name: http
+#       port: 9200
+#       targetPort: 9200
+#     - name: transport
+#       port: 9300
+#       targetPort: 9300
+
+--- # Load Balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+    - name: http
+      port: 9200
+      targetPort: 9200
+    - name: transport
+      port: 9300
+      targetPort: 9300
+  type: LoadBalancer

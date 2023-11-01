@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: logstash-config
-data:
-  logstash.yml: |
-    http.host: "0.0.0.0"
-    pipeline.ordered: auto
-    path.config: "/usr/share/logstash/pipeline"

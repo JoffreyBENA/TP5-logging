@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+      - name: logstash
+        image: docker.elastic.co/logstash/logstash:8.0.0
+        ports:
+        - containerPort: 5044
+        volumeMounts:
+        - name: logstash-config
+          mountPath: /usr/share/logstash/config
+        resources:
+          limits:
+            memory: "2Gi"  # Limite maximale de mémoire
+            cpu: "1000m"   # Limite maximale de CPU
+          requests:
+            memory: "1Gi"  # Demande minimale de mémoire
+            cpu: "500m"    # Demande minimale de CPU
+      volumes:
+      - name: logstash-config
+        configMap:
+          name: logstash-config
+

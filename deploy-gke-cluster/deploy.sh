@@ -26,95 +26,95 @@ gcloud services enable dns.googleapis.com --project=$GCP_PROJECT
 gcloud services enable run.googleapis.com --project=$GCP_PROJECT
 gcloud services enable sourcerepo.googleapis.com --project=$GCP_PROJECT
 
+# # # --------------------------------------------------------------------
+
+# echo -e "\033[1;32;4m-- Etape 2/8: Vérification de la présence de la clé ssh et Génération si nécessaire --\033[0m"
+
+# #!/bin/bash
+
+# # Chemin du dossier .ssh
+# ssh_dir="$HOME/.ssh"
+
+# # Vérifier si le dossier .ssh existe
+# if [ ! -d "$ssh_dir" ]; then
+#     # Si le dossier n'existe pas, le créer
+#     mkdir "$ssh_dir"
+# fi
+
+# # Vérifier si une clé SSH existe déjà
+# if [ ! -f "$ssh_dir/id_rsa" ]; then
+#     # Si la clé n'existe pas, générer une nouvelle clé SSH
+#     ssh-keygen -t rsa -b 4096
+# else
+#     echo "Une clé SSH existe déjà dans le dossier $ssh_dir."
+# fi
+
 # # --------------------------------------------------------------------
 
-echo -e "\033[1;32;4m-- Etape 2/8: Vérification de la présence de la clé ssh et Génération si nécessaire --\033[0m"
+# echo -e "\033[1;32;4m-- Etape 3/8: Vérification de Terrafrom et Installation si nécessaire --\033[0m"
 
-#!/bin/bash
+# # Installation de Terraform s'il n'est pas installé
+# if ! command -v terraform &> /dev/null; then
+#     echo "Terraform n'est pas installé. Installation en cours..."
+#     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+#     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list >/dev/null
+#     sudo apt update
+#     sudo apt install terraform
+#     if [ $? -eq 0 ]; then
+#         echo -e "\033[33mTerraform a été installé avec succès.\033[0m"
+#     else
+#         echo -e "\033[31mL'installation de Terraform a échoué.\033[0m"
+#         exit 1
+#     fi
+# else
+#     echo -e "\033[31mTerraform est déjà installé.\033[0m"
+# fi
 
-# Chemin du dossier .ssh
-ssh_dir="$HOME/.ssh"
+# # Vérification de la présence des fichiers Terraform
+# if [ ! -d "terraform" ] || [ ! -f "terraform/variables.tf" ] || [ ! -f "terraform/main.tf" ] || [ ! -f "terraform/vpc/variables.tf" ] || [ ! -f "terraform/vpc/main.tf" ] || [ ! -f "terraform/gke-cluster/variables.tf" ] || [ ! -f "terraform/gke-cluster/main.tf" ] || [ ! -f "terraform/service_account/variables.tf" ] || [ ! -f "terraform/service_account/main.tf" ] || [ ! -f "terraform/firewall/variables.tf" ] || [ ! -f "terraform/firewall/main.tf" ]; then
+#     echo -e "\033[33mCertains fichiers Terraform sont manquants. Clonage du référentiel...\033[0m"
+#     git clone https://gitlab.com/JoffreyBENA/TP4-CD.git
+#     cd TP4-CD/deploy-prod/terraform
+# else
+#     cd terraform
+# fi
 
-# Vérifier si le dossier .ssh existe
-if [ ! -d "$ssh_dir" ]; then
-    # Si le dossier n'existe pas, le créer
-    mkdir "$ssh_dir"
-fi
+# # --------------------------------------------------------------------
 
-# Vérifier si une clé SSH existe déjà
-if [ ! -f "$ssh_dir/id_rsa" ]; then
-    # Si la clé n'existe pas, générer une nouvelle clé SSH
-    ssh-keygen -t rsa -b 4096
-else
-    echo "Une clé SSH existe déjà dans le dossier $ssh_dir."
-fi
+# echo -e "\033[1;32;4m-- Etape 4/8: Initialisation de Terrafrom et Création des machines --\033[0m"
 
-# --------------------------------------------------------------------
+# # Initialisation de Terraform si c'est la première exécution
+# if [ ! -d ".terraform" ]; then
+#     echo -e "\033[33mInitialisation de Terraform...\033[0m"
+#     terraform init
+# fi
 
-echo -e "\033[1;32;4m-- Etape 3/8: Vérification de Terrafrom et Installation si nécessaire --\033[0m"
+# # Création des machines avec Terraform
+# echo -e "\033[33mCréation des machines avec Terraform...\033[0m"
+# terraform apply -auto-approve
+# cd ..
 
-# Installation de Terraform s'il n'est pas installé
-if ! command -v terraform &> /dev/null; then
-    echo "Terraform n'est pas installé. Installation en cours..."
-    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list >/dev/null
-    sudo apt update
-    sudo apt install terraform
-    if [ $? -eq 0 ]; then
-        echo -e "\033[33mTerraform a été installé avec succès.\033[0m"
-    else
-        echo -e "\033[31mL'installation de Terraform a échoué.\033[0m"
-        exit 1
-    fi
-else
-    echo -e "\033[31mTerraform est déjà installé.\033[0m"
-fi
+# # --------------------------------------------------------------------
+# echo -e "\033[1;32;4m-- Etape 4/8: Génération des inventaires dynamiques Ansible  --\033[0m"
 
-# Vérification de la présence des fichiers Terraform
-if [ ! -d "terraform" ] || [ ! -f "terraform/variables.tf" ] || [ ! -f "terraform/main.tf" ] || [ ! -f "terraform/vpc/variables.tf" ] || [ ! -f "terraform/vpc/main.tf" ] || [ ! -f "terraform/gke-cluster/variables.tf" ] || [ ! -f "terraform/gke-cluster/main.tf" ] || [ ! -f "terraform/service_account/variables.tf" ] || [ ! -f "terraform/service_account/main.tf" ] || [ ! -f "terraform/firewall/variables.tf" ] || [ ! -f "terraform/firewall/main.tf" ]; then
-    echo -e "\033[33mCertains fichiers Terraform sont manquants. Clonage du référentiel...\033[0m"
-    git clone https://gitlab.com/JoffreyBENA/TP4-CD.git
-    cd TP4-CD/deploy-prod/terraform
-else
-    cd terraform
-fi
+# # Génération de l'inventaire dynamique dans le fichiers inventori.ini avec les adresses IP internes des VMs déployées par Terraform :
+# echo -e "\033[33mCréation du fichier 'inventory.ini'...\033[0m"
+# cd ./ansible
+# rm -f inventory.ini
+# cd ..
+# ./creation-inventory.sh >ansible/inventory.ini
 
-# --------------------------------------------------------------------
+# # # Génération de l'inventaire dynamique dans le fichiers vars.yml avec les adresse IP internes des Vms déployées par Terraform :
 
-echo -e "\033[1;32;4m-- Etape 4/8: Initialisation de Terrafrom et Création des machines --\033[0m"
+# # # Remplacement des adresses IP dans le fichier vars.yml
+# cd ./terraform
+# GKE_external_ip=$(terraform output cluster_external_endpoint | sed 's/"//g')
 
-# Initialisation de Terraform si c'est la première exécution
-if [ ! -d ".terraform" ]; then
-    echo -e "\033[33mInitialisation de Terraform...\033[0m"
-    terraform init
-fi
+# sed -i "" "s/^GKE_external_ip:.*/GKE_external_ip: \"$GKE_external_ip\"/" ../ansible/vars.yml
 
-# Création des machines avec Terraform
-echo -e "\033[33mCréation des machines avec Terraform...\033[0m"
-terraform apply -auto-approve
-cd ..
+# cd ..
 
-# --------------------------------------------------------------------
-echo -e "\033[1;32;4m-- Etape 4/8: Génération des inventaires dynamiques Ansible  --\033[0m"
-
-# Génération de l'inventaire dynamique dans le fichiers inventori.ini avec les adresses IP internes des VMs déployées par Terraform :
-echo -e "\033[33mCréation du fichier 'inventory.ini'...\033[0m"
-cd ./ansible
-rm -f inventory.ini
-cd ..
-./creation-inventory.sh >ansible/inventory.ini
-
-# # Génération de l'inventaire dynamique dans le fichiers vars.yml avec les adresse IP internes des Vms déployées par Terraform :
-
-# # Remplacement des adresses IP dans le fichier vars.yml
-cd ./terraform
-GKE_external_ip=$(terraform output cluster_external_endpoint | sed 's/"//g')
-
-sed -i "" "s/^GKE_external_ip:.*/GKE_external_ip: \"$GKE_external_ip\"/" ../ansible/vars.yml
-
-cd ..
-
-echo -e "\033[0;32mLes adresses IP internes ont été mises à jour dans le fichier vars.yml.\033[0m"
+# echo -e "\033[0;32mLes adresses IP internes ont été mises à jour dans le fichier vars.yml.\033[0m"
 
 # --------------------------------------------------------------------
 
@@ -162,45 +162,8 @@ echo "Terminé ! L'image Docker est importée dans CONTAINER Registry dans la r�
 
 # --------------------------------------------------------------------
 
-# echo -e "\033[1;32;4m-- Etape 6/8: Vérification de Ansible et Installation si nécessaire --\033[0m"
+echo -e "\033[1;32;4m-- Etape 7/8: Déploiement sur le cluster GKE --\033[0m"
 
-# # Vérification et installation d'Ansible
-# if ! command -v ansible &> /dev/null; then
-#     echo "Ansible n'est pas installé. Installation en cours..."
-#     sudo apt update
-#     sudo apt install -y ansible
-#     if [ $? -eq 0 ]; then
-#         echo -e "\033[0;32mAnsible a été installé avec succès.\033[0m"
-#     else
-#         echo -e "\033[31mL'installation de Ansible a échoué.\033[0m"
-#         exit 1
-#     fi
-# else
-#     echo -e "\033[31mAnsible est déjà installé.\033[0m"
-# fi
-
-# # Vérification de la présence des fichiers Ansible
-# if [ ! -d "ansible" ] || [ ! -f "ansible/roles/gke-cluster/tasks/main.yml" ] || [ ! -f "ansible/vars.yml" ] || [ ! -f "ansible/inventory.ini" ] || [ ! -f "ansible/ansible.cfg" ] || [ ! -f "ansible/playbook.yml" ]; then
-#     echo "Certains fichiers Ansible sont manquants. Clonage du référentiel..."
-#     git clone https://gitlab.com/JoffreyBENA/TP4-CD.git
-#     cd TP4-CD/deploy-prod/ansible
-# else
-#     cd ansible
-# fi
-
-# # --------------------------------------------------------------------
-
-# # Ajoutez une pause de 10 secondes
-# sleep 5
-
-# --------------------------------------------------------------------
-
-echo -e "\033[1;32;4m-- Etape 7/8: Déploiement de l'image sur le cluster GKE --\033[0m"
-
-# # Déploiement avec Ansible
-# echo "Déploiement avec Ansible..."
-# ansible-playbook -i inventory.ini -b playbook.yml -v
-# cd ..
 
 cd ./terraform
 REGION=$(terraform output region  | sed 's/"//g')
@@ -210,7 +173,47 @@ cd ..
 gcloud config set project $GCP_PROJECT
 gcloud container clusters get-credentials $CLUSTER_NAME --zone=$REGION --project=$GCP_PROJECT
 # gcloud container clusters get-credentials my-gke-cluster --zone=europe-west9 --project=exalted-airfoil-402614                                                                      ─╯
-kubectl apply -f k8s-config.yml
+
+#!/bin/bash
+
+# Installation d'Elasticsearch
+kubectl apply -f ./kubernetes/elasticsearch/elasticsearch-deployment.yaml
+kubectl apply -f ./kubernetes/elasticsearch/elasticsearch-service.yaml
+
+# Installation de Logstash
+kubectl apply -f ./kubernetes/logstash/logstash-configmap.yaml
+kubectl apply -f ./kubernetes/logstash/logstash-deployment.yaml
+kubectl apply -f ./kubernetes/logstash/logstash-service.yaml
+
+# Installation de Filebeat
+kubectl apply -f ./kubernetes/filebeat/filebeat-config.yaml
+kubectl apply -f ./kubernetes/filebeat/filebeat-deployment.yaml
+
+# Installation de Kibana
+kubectl apply -f ./kubernetes/kibana/kibana-deployment.yaml
+kubectl apply -f ./kubernetes/kibana/kibana-service.yaml
+
+# Déploiement de l'application Nginx
+kubectl apply -f ./kubernetes/nginx/nginx-deployment.yml
+kubectl apply -f ./kubernetes/nginx/nginx-service.yml
+
+# Création d'une pipeline Logstash pour les logs Nginx
+kubectl apply -f ./kubernetes/logstash/logstash-nginx-pipeline.conf
+
+# Création d'un modèle d'index Elasticsearch pour les logs Nginx (personnalisé selon vos besoins)
+
+# Configuration de Filebeat pour récupérer les logs de Nginx
+# Assurez-vous que les logs Nginx sont stockés dans le bon répertoire sur les nœuds Kubernetes.
+
+# Configuration de Filebeat pour récupérer les logs des conteneurs
+# Assurez-vous que les logs des conteneurs sont accessibles et configurés dans la configuration Filebeat.
+
+# Définition de la stratégie de stockage et de rotation des logs pour garder les logs pendant 2 jours (à configurer dans Elasticsearch et Logstash).
+
+# Ajoutez d'autres étapes spécifiques à votre configuration, telles que la configuration de l'index pattern dans Kibana.
+
+echo "Installation et configuration terminées."
+
 kubectl get deployments
 kubectl get pods
 kubectl get services
