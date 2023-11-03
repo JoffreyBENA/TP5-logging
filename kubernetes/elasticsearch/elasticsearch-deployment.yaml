@@ -14,15 +14,15 @@ spec:
     spec:
       containers:
         - name: elasticsearch
-          image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+          image: docker.elastic.co/elasticsearch/elasticsearch:8.0.0
           ports:
             - containerPort: 9200
             - containerPort: 9300
           resources:
             limits:
               memory: 1Gi
-              cpu: "2"
+              cpu: 500m
             requests:
               memory: 1Gi
-              cpu: "1"
+              cpu: 500m
 

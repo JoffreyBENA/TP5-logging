@@ -7,7 +7,7 @@ variable "cluster_name" {
 variable "machine_type" {
     type        = string
     description = "Type de machine du nœud GKE"
-    default     = "e2-medium"
+    default     = "e2-standard-2"
 }
 
 variable "region" {
