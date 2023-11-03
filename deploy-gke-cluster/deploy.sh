@@ -127,8 +127,12 @@ echo -e "\033[1;32;4m-- Etape 5/8: Importation de l'image Docker de l'app dans G
 # Vérification si le service Docker est en cours d'exécution
 if ! docker info > /dev/null 2>&1; then
     echo "Le service Docker n'est pas en cours d'exécution. Démarrage de Docker..."
-    sudo service docker start
+    # sudo service docker start #Linux
+    sudo open -a Docker #Mac
 fi
+
+# Ajoutez une pause de 10 secondes
+sleep 10
 
 # Define your project name and region
 GCP_REGION="eu-west9"  # Remplacez par la région de votre projet GCP
@@ -197,9 +201,6 @@ kubectl apply -f ../kubernetes/kibana/kibana-service.yaml
 kubectl apply -f ../kubernetes/nginx/nginx-deployment.yml
 kubectl apply -f ../kubernetes/nginx/nginx-service.yml
 
-# Création d'une pipeline Logstash pour les logs Nginx
-kubectl apply -f ../kubernetes/logstash/logstash-nginx-pipeline.conf
-
 # Création d'un modèle d'index Elasticsearch pour les logs Nginx (personnalisé selon vos besoins)
 
 # Configuration de Filebeat pour récupérer les logs de Nginx
@@ -217,12 +218,25 @@ echo "Installation et configuration terminées."
 # --------------------------------------------------------------------
 
 # Ajoutez une pause de 10 secondes
-sleep 10
+sleep 15
 
---------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 kubectl get deployments
 kubectl get pods
 kubectl get services
 
 # kubectl config unset current-context
+
+#--------------------------------------------------------------------
+
+# Pause de 10 secondes
+sleep 15
+
+# Vérification de l'état des déploiements, des pods et des services après la pause
+kubectl get deployments
+kubectl get pods
+kubectl get services
+
+#--------------------------------------------------------------------
+
