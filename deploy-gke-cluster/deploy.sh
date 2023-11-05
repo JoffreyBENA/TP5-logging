@@ -195,8 +195,8 @@ kubectl apply -f ../kubernetes/nginx/nginx-service.yml
 
 # --------------------------------------------------------------------
 
-# Ajoutez une pause de 10 secondes
-sleep 15
+# Ajoutez une pause de 20 secondes
+sleep 20
 
 #--------------------------------------------------------------------
 
@@ -206,6 +206,21 @@ kubectl get services
 
 # kubectl config unset current-context
 
+#--------------------------------------------------------------------
+# Récupérer les ressources Kubernetes avec l'étiquette "elastic"
+kubectl get elastic
+
+# Récupérer le mot de passe de l'utilisateur "elastic" depuis le secret
+kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
+
+echo "Installation et configuration terminées."
+
+# Mettre en place un port-forwarding pour accéder à Kibana localement
+kubectl port-forward service/kibana-kb-http 5601
+
+# Ctrl + C : pour quitter le port-fowarding
+
+# --------------------------------------------------------------------
 # # Installation d'Elasticsearch
 # kubectl apply -f ../kubernetes/elasticsearch/elasticsearch-deployment.yaml
 # kubectl apply -f ../kubernetes/elasticsearch/elasticsearch-service.yaml
@@ -227,18 +242,6 @@ kubectl get services
 # kubectl apply -f ../kubernetes/nginx/nginx-deployment.yml
 # kubectl apply -f ../kubernetes/nginx/nginx-service.yml
 
-# # Création d'un modèle d'index Elasticsearch pour les logs Nginx (personnalisé selon vos besoins)
-
-# # Configuration de Filebeat pour récupérer les logs de Nginx
-# # Assurez-vous que les logs Nginx sont stockés dans le bon répertoire sur les nœuds Kubernetes.
-
-# # Configuration de Filebeat pour récupérer les logs des conteneurs
-# # Assurez-vous que les logs des conteneurs sont accessibles et configurés dans la configuration Filebeat.
-
-# # Définition de la stratégie de stockage et de rotation des logs pour garder les logs pendant 2 jours (à configurer dans Elasticsearch et Logstash).
-
-# # Ajoutez d'autres étapes spécifiques à votre configuration, telles que la configuration de l'index pattern dans Kibana.
-
 # echo "Installation et configuration terminées."
 
 # # --------------------------------------------------------------------
@@ -255,14 +258,14 @@ kubectl get services
 # # kubectl config unset current-context
 
 # #--------------------------------------------------------------------
+# # Création d'un modèle d'index Elasticsearch pour les logs Nginx (personnalisé selon vos besoins)
 
-# # Pause de 10 secondes
-# sleep 15
+# # Configuration de Filebeat pour récupérer les logs de Nginx
+# # Assurez-vous que les logs Nginx sont stockés dans le bon répertoire sur les nœuds Kubernetes.
 
-# # Vérification de l'état des déploiements, des pods et des services après la pause
-# kubectl get deployments
-# kubectl get pods
-# kubectl get services
+# # Configuration de Filebeat pour récupérer les logs des conteneurs
+# # Assurez-vous que les logs des conteneurs sont accessibles et configurés dans la configuration Filebeat.
 
-# #--------------------------------------------------------------------
+# # Définition de la stratégie de stockage et de rotation des logs pour garder les logs pendant 2 jours (à configurer dans Elasticsearch et Logstash).
 
+# # Ajoutez d'autres étapes spécifiques à votre configuration, telles que la configuration de l'index pattern dans Kibana.
