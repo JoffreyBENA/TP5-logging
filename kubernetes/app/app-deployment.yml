@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: mon-app-deployment
 spec:
-  replicas: 3  # Vous pouvez ajuster le nombre de répliques selon vos besoins.
+  replicas: 1  # Vous pouvez ajuster le nombre de répliques selon vos besoins.
   selector:
     matchLabels:
       app: mon-app

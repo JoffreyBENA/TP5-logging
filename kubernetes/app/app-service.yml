@@ -11,24 +11,3 @@ spec:
       port: 80
       targetPort: 8080
   type: LoadBalancer
-
----
-apiVersion: "autoscaling/v2beta1"
-kind: "HorizontalPodAutoscaler"
-metadata:
-  name: "my-app-hpa-yydz"
-  namespace: "default"
-  labels:
-    app: "my-app"
-spec:
-  scaleTargetRef:
-    kind: "Deployment"
-    name: "my-app"
-    apiVersion: "apps/v1"
-  minReplicas: 1
-  maxReplicas: 5
-  metrics:
-  - type: "Resource"
-    resource:
-      name: "cpu"
-      targetAverageUtilization: 80
