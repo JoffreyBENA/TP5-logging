@@ -204,6 +204,7 @@ helm repo add elastic https://helm.elastic.co
 helm repo update
 helm install elasticsearch elastic/elasticsearch
 helm install kibana elastic/kibana
+helm install logstash elastic/logstash
 kubectl get pods
 
 # --------------------------------------------------------------------
