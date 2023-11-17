@@ -197,6 +197,7 @@ kubectl apply -f ../kubernetes/nginx/nginx-service.yml
 
 # Déploiement de l'application App (Python-handle-it)
 kubectl apply -f ../kubernetes/app/app-deployment.yml
+kubectl apply -f ../kubernetes/app/app-service.yml
 
 # Helm :
 helm version
