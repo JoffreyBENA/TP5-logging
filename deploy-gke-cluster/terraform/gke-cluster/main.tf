@@ -9,7 +9,6 @@ resource "google_container_cluster" "gke-cluster" {
     network       = var.network_self_link
     subnetwork    = var.subnet_self_link
     
-    
     # Cluster properties
     node_config {
         preemptible = true

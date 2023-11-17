@@ -175,6 +175,7 @@ CLUSTER_NAME=$(terraform output cluster_name  | sed 's/"//g')
 cd ..
 
 gcloud config set project $GCP_PROJECT
+# gcloud config set project exalted-airfoil-402614 
 gcloud container clusters get-credentials $CLUSTER_NAME --zone=$REGION --project=$GCP_PROJECT
 # gcloud container clusters get-credentials my-gke-cluster --zone=europe-west9 --project=exalted-airfoil-402614                                                                     
 
@@ -195,17 +196,18 @@ gcloud container clusters get-credentials $CLUSTER_NAME --zone=$REGION --project
 kubectl apply -f ../kubernetes/nginx/nginx-deployment.yml
 kubectl apply -f ../kubernetes/nginx/nginx-service.yml
 
-# Déploiement de l'application App (Python-handle-it)
-kubectl apply -f ../kubernetes/app/app-deployment.yml
-kubectl apply -f ../kubernetes/app/app-service.yml
+# # Déploiement de l'application App (Python-handle-it)
+# kubectl apply -f ../kubernetes/app/app-deployment.yml
+# kubectl apply -f ../kubernetes/app/app-service.yml
 
 # Helm :
 helm version
 helm repo add elastic https://helm.elastic.co
 helm repo update
 helm install elasticsearch elastic/elasticsearch
-helm install kibana elastic/kibana
 helm install logstash elastic/logstash
+helm install filebeat elastic/filebeat
+helm install kibana elastic/kibana
 kubectl get pods
 
 # --------------------------------------------------------------------
