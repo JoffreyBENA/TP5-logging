@@ -204,22 +204,25 @@ kubectl apply -f ../kubernetes/nginx/nginx-service.yml
 helm version
 helm repo add elastic https://helm.elastic.co
 helm repo update
-helm install elasticsearch elastic/elasticsearch
-helm install logstash elastic/logstash
-helm install filebeat elastic/filebeat
+helm install elasticsearch elastic/elasticsearch -f ./values.yaml
+kubectl port-forward svc/elasticsearch-master 9200 &
+kubectl port-forward deployment/kibana-kibana 5601
+# helm install elasticsearch elastic/elasticsearch
+# helm install logstash elastic/logstash
+# helm install filebeat elastic/filebeat
 helm install kibana elastic/kibana
-kubectl get pods
+# kubectl get pods
 
-# --------------------------------------------------------------------
+# # --------------------------------------------------------------------
 
-# Ajoutez une pause de 20 secondes
-sleep 20
+# # Ajoutez une pause de 20 secondes
+# sleep 20
 
-#--------------------------------------------------------------------
+# #--------------------------------------------------------------------
 
-kubectl get deployments
-kubectl get pods
-kubectl get services
+# kubectl get deployments
+# kubectl get pods
+# kubectl get services
 
 # kubectl config unset current-context
 
