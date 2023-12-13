@@ -183,68 +183,81 @@ gcloud container clusters get-credentials $CLUSTER_NAME --zone=$REGION --project
 
 #!/bin/bash
 
-# # Installation des configurations cluster (securité)
-# kubectl create -f https://download.elastic.co/downloads/eck/2.9.0/crds.yaml
+# Installation des configurations cluster (securité)
+kubectl create -f https://download.elastic.co/downloads/eck/2.9.0/crds.yaml
 
-# # Installation de l'opérateur ECK
-# kubectl apply -f https://download.elastic.co/downloads/eck/2.9.0/operator.yaml
+# Installation de l'opérateur ECK
+kubectl apply -f https://download.elastic.co/downloads/eck/2.9.0/operator.yaml
 
-# # Déploiement de la plateforme ECK
-# kubectl apply -f https://raw.githubusercontent.com/elastic/cloud-on-k8s/2.9/config/recipes/elastic-agent/fleet-kubernetes-integration.yaml
+# Déploiement de la plateforme ECK
+kubectl apply -f https://raw.githubusercontent.com/elastic/cloud-on-k8s/2.9/config/recipes/elastic-agent/fleet-kubernetes-integration.yaml
 
 # Déploiement de l'application Nginx
 kubectl apply -f ../kubernetes/nginx/nginx-deployment.yml
 kubectl apply -f ../kubernetes/nginx/nginx-service.yml
 
-# # Déploiement de l'application App (Python-handle-it)
-# kubectl apply -f ../kubernetes/app/app-deployment.yml
-# kubectl apply -f ../kubernetes/app/app-service.yml
+# Déploiement de l'application App (Python-handle-it)
+kubectl apply -f ../kubernetes/app/app-deployment.yml
+kubectl apply -f ../kubernetes/app/app-service.yml
 
-# Helm :
-helm version
-helm repo add elastic https://helm.elastic.co
-helm repo update
-helm install elasticsearch elastic/elasticsearch -f ./values.yaml
-kubectl port-forward svc/elasticsearch-master 9200 &
-kubectl port-forward deployment/kibana-kibana 5601
-# helm install elasticsearch elastic/elasticsearch
-# helm install logstash elastic/logstash
-# helm install filebeat elastic/filebeat
-helm install kibana elastic/kibana
-# kubectl get pods
+# # Helm :
+# helm version
+# helm repo add elastic https://helm.elastic.co
+# helm repo update
+# helm install elasticsearch elastic/elasticsearch -f ./values.yaml
+# kubectl port-forward svc/elasticsearch-master 9200 &
+# kubectl port-forward deployment/kibana-kibana 5601
+# # helm install elasticsearch elastic/elasticsearch
+# # helm install logstash elastic/logstash
+# # helm install filebeat elastic/filebeat
+# helm install kibana elastic/kibana
+# # kubectl get pods
 
 # # --------------------------------------------------------------------
 
-# # Ajoutez une pause de 20 secondes
-# sleep 20
+# Ajoutez une pause de 60 secondes
+sleep 60
 
 # #--------------------------------------------------------------------
 
-# kubectl get deployments
-# kubectl get pods
-# kubectl get services
+kubectl get deployments
+kubectl get pods
+kubectl get services
 
 # kubectl config unset current-context
 
-# #--------------------------------------------------------------------
-# # Récupérer les ressources Kubernetes avec l'étiquette "elastic"
-# kubectl get elastic
+#--------------------------------------------------------------------
 
-# # Récupérer le mot de passe de l'utilisateur "elastic" depuis le secret
-# kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='Le mot de passe de l utilisateur "elastic" est : {.data.elastic}' | base64 --decode; echo
+# Ajoutez une pause de 60 secondes
+sleep 60
 
-# echo "Installation et configuration terminées."
+#--------------------------------------------------------------------
 
-# # --------------------------------------------------------------------
+# Récupérer les ressources Kubernetes avec l'étiquette "elastic"
+kubectl get elastic
 
-# # Ajoutez une pause de 1min
-# sleep 60
+#--------------------------------------------------------------------
 
-# # --------------------------------------------------------------------
-# # Mettre en place un port-forwarding pour accéder à Kibana localement
-# kubectl port-forward service/kibana-kb-http 5601
+# Ajoutez une pause de 60 secondes
+sleep 60
 
-# # Ctrl + C : pour quitter le port-fowarding
+#--------------------------------------------------------------------
+
+# Récupérer le mot de passe de l'utilisateur "elastic" depuis le secret
+echo "Le mot de passe de l'utilisateur 'elastic' est : $(kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode)"
+
+echo "Installation et configuration terminées."
+
+# --------------------------------------------------------------------
+
+# Ajoutez une pause de 1min
+sleep 60
+
+# --------------------------------------------------------------------
+# Mettre en place un port-forwarding pour accéder à Kibana localement
+kubectl port-forward service/kibana-kb-http 5601
+
+# Ctrl + C : pour quitter le port-fowarding
 
 # --------------------------------------------------------------------
 # # Installation d'Elasticsearch
