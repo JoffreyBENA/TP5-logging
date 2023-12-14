@@ -244,7 +244,7 @@ sleep 60
 #--------------------------------------------------------------------
 
 # Récupérer le mot de passe de l'utilisateur "elastic" depuis le secret
-echo "Le mot de passe de l'utilisateur 'elastic' est : $(kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode)"
+echo -e "\e[1m\e[31mLe mot de passe de l'utilisateur 'elastic' est :\e[0m \e[30m\e[43m$(kubectl get secret elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode)\e[0m"
 
 echo "Installation et configuration terminées."
 
