@@ -145,3 +145,20 @@ Déploiement de l'application dans le cluster Kubernetes en veillant à ce que l
 Assurez-vous d'inclure des exemples concrets dans votre documentation pour montrer comment configurer Logstash et Filebeat pour une nouvelle application. Cette documentation permettra aux équipes responsables des nouvelles applications de s'intégrer facilement dans le système de collecte de journaux existant.
 
 En suivant ces étapes, vous pouvez gérer efficacement les journaux de chaque application dans leur propre index avec des pipelines Logstash distincts, facilitant ainsi l'ajout de nouvelles applications dans le cluster Kubernetes.
+
+--------------------------------------------------------------------'
+
+Procédure pour déployer et lancer ELK :
+
+- se placer dans le dossier deploy-gke-cluster
+- lancer la commande : bash deploy.sh
+- attendre 6 minutes que le cluster Kubernetes soit déployé
+- la commande sudo qui lance Docker automatiquement peut vous demander le MDP Admin de l'ordinateur
+- aller sur votre navigateur a cette URL : localhost:5601
+- renseigner le nom d'utilisateur par : elastic
+- renseigner le MDP par celui en rouge souligné dans le terminal : ex (eTE2YYBx...)
+- cliquer sur "Discover" dans le menu de gauche
+- vous avez un apercu des logs récupérés par ELK
+- pour rajouter un agent de collecte de logs pour votre application (ici NGINX), dans la barre de recherche en haut taper le nom de votre agent (ici NGINX)
+
+![screenshot1](screenshots/ELK-TP5-Logs-last-hour-PODS.png)
