@@ -158,12 +158,13 @@ Procédure pour déployer et lancer ELK :
 - renseigner le nom d'utilisateur par : elastic
 - renseigner le MDP par celui en rouge souligné dans le terminal : ex (eTE2YYBx...)
 - cliquer sur "Discover" dans le menu de gauche
-- vous avez un apercu des logs récupérés par ELK : 
+- vous avez un apercu des logs récupérés par ELK :
+
 ![screenshot1](screenshots/ELK-TP5-Logs-last-hour-PODS.png)
 
 - pour rajouter un agent de collecte de logs pour votre application (ici NGINX), dans la barre de recherche en haut taper le nom de votre agent (ici NGINX)
-- cliquer sur Add NGINX 
+- cliquer sur "Add NGINX"
 - verifier que dans Configure intégration , collect logs from NGINX instances est coché ainsi que les metrics
 - dans 'Where to add this integration': cliquer sur l'onglet 'Existing hosts' et sélectionner 'Elastic Agent on ECK policy'  
 
-- cliquer sur hamburguer, scroll down jusqu'a management, cliquer sur integration, cliquer sur installerd integration, cliquer sur Nginx, cliquer sur integration policies, cliquer sur nginx , advanced options , dans le champ Ignore events older than mettre la duréee pour laquelle ovsu voulez conserver les logs ici 72h 
+- cliquer sur hamburger, scroll down jusqu'a management, cliquer sur integration, cliquer sur installer d'integration, cliquer sur Nginx, cliquer sur integration policies, cliquer sur nginx , advanced options , dans le champ Ignore events older than mettre la durée pour laquelle vous voulez conserver les logs ici 72h.
