@@ -1,4 +1,4 @@
-# Deploy-prod
+# Deploy-gke-cluster
 
 Documentation du Déploiement Automatisé d'un cluster kubernetes GKE sur Google Cloud Platform (GCP)
 
@@ -95,10 +95,10 @@ L'architecture comprend cluster Kubernetes (GKE) pour pouvoir déployer notre ap
 
 ## Composition et Configuration du dossier Terrafrom
 
-- ``db_vm`` : Ce répertoire contient les fichiers spécifiques à la création d'une machine virtuelle pour la base de données.
-    - **main.tf** : Ce fichier définit la configuration principale pour la création de la machine virtuelle de la base de données, y compris les détails tels que le type de machine, l'image, et les paramètres réseau.
-    - **outputs.tf** : Ce fichier définit les sorties (outputs) que vous souhaitez obtenir après la création de la machine virtuelle de la base de données.
-    - **variables.tf** : Ce fichier contient les déclarations de variables spécifiques à la création de la machine virtuelle de la base de données **== CONFIGURABLE**
+- ``gke-cluster`` : Ce répertoire contient les fichiers spécifiques à la création d'un cluster GKE.
+    - **main.tf** : Ce fichier définit la configuration principale pour la création d'un cluster GKE, y compris les détails tels que le type de machine, l'image, et les paramètres réseau.
+    - **outputs.tf** : Ce fichier définit les sorties (outputs) que vous souhaitez obtenir après la création du cluster GKE.
+    - **variables.tf** : Ce fichier contient les déclarations de variables spécifiques du cluster GKE **== CONFIGURABLE**
 
 - ``firewall`` : Ce répertoire contient les fichiers pour la configuration des règles de pare-feu.
     - **main.tf** : Ce fichier définit la configuration des règles de pare-feu pour votre infrastructure.
@@ -134,7 +134,7 @@ L'architecture comprend cluster Kubernetes (GKE) pour pouvoir déployer notre ap
 
 ## Déploiement de l'infrastructure:
 
-Une fois que vous avez effectué ces modifications des variables pour l'ensemble des dossiers, vous pouvez exécuter les scripts Terraform et Ansible pour déployer et configurer les sites WordPress sur GCP en utilisant la commande suivante :
+Une fois que vous avez effectué ces modifications des variables pour l'ensemble des dossiers, vous pouvez exécuter les scripts Terraform et Ansible pour déployer et configurer du cluster GKE sur GCP en utilisant la commande suivante :
 
 ``` sh
     bash deploy.sh
@@ -142,7 +142,7 @@ Une fois que vous avez effectué ces modifications des variables pour l'ensemble
 
 ## Script bash deploy.sh pour déployer une infrastructure GCP et une application WordPress
 
-Le script bash `deploy.sh` est un script de déploiement automatisé pour déployer une infrastructure sur Google Cloud Platform (GCP) et déployer une application WordPress à l'aide de Terraform et Ansible.
+Le script bash `deploy.sh` est un script de déploiement automatisé pour déployer une infrastructure sur Google Cloud Platform (GCP) et déployer un cluster GKE à l'aide de Terraform et Ansible.
 
 ## Description étape par étape :
 
@@ -168,7 +168,7 @@ Le script bash `deploy.sh` est un script de déploiement automatisé pour déplo
 ### Étape 5/8: Génération des inventaires dynamiques Ansible
 
 * Génère un fichier d'inventaire dynamique `inventory.ini` contenant les adresses IP externes des VM déployées par Terraform.
-* Met à jour le fichier `vars.yml` avec les adresses IP internes des VM déployées par Terraform.
+* Met à jour le fichier `vars.yml` avec les adresses IP internes des ressources par Terraform.
 
 ### Étape 6/8: Vérification de Ansible et Installation si nécessaire
 

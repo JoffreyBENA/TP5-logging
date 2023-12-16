@@ -16,7 +16,8 @@
     - Assurez-vous d'avoir les droits et les autorisations nécessaires pour déployer des ressources dans le cluster.
 
 3- Schéma de présentation de l'infrastructure mise en place :
-[Insérez un schéma illustrant l'architecture de la solution avec Elasticsearch, Logstash, Filebeat et l'application Nginx.]
+
+
 
 4- Comment déployer la solution de centralisation des logs :
 
