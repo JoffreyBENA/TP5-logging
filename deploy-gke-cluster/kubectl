@@ -1,1 +1,0 @@
-Le mot de passe de l utilisateur "elastic" est :  get secret elasticsearch-es-elastic-user -o=jsonpath={.data.elastic}
