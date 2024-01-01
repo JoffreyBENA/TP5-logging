@@ -136,7 +136,7 @@ Le script bash `deploy.sh` est un script de déploiement automatisé pour déplo
 - cliquer sur `"Discover" dans le menu de gauche
 - vous avez un apercu des logs récupérés par ELK :
 
-![screenshot1](screenshots/ELK-TP5-Logs-last-hour-PODS.png)
+![screenshot1](screenshots/Affichage-Logs-24H.png)
 
 - pour rajouter un agent de collecte de logs pour votre application (ici NGINX), dans la barre de recherche en haut taper le nom de votre agent (ici NGINX)
 - cliquer sur `"Add NGINX"`
