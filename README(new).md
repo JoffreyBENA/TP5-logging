@@ -107,7 +107,7 @@ L'arborescence du repository est conçue de manière à faciliter le déploiemen
 
 ## Schéma visuel de la solution de monitoring ELK
 
-![pipeline-cd](logging-schema/centralisation-logs.drawio.pdf)
+![logging-schema](logging-schema/centralisation-logs.drawio.png)
 
 ## Configuration des paramètres
 
