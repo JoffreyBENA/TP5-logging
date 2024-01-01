@@ -1,6 +1,6 @@
-# Documentation de la solution de centralisation et de gestion des logs avec la suite Elastic : 
+# Documentation de la solution de centralisation et de gestion des logs avec la suite Elastic :
 
-Ce document décrit le pipeline CI/CD pour une application Python. Il explique les étapes du pipeline, les fichiers nécessaires et la configuration des paramètres.
+Cette documentation détaille la mise en place d'une infrastructure de monitoring avec la suite Elastic. Elle offre un aperçu complet des fichiers et des répertoires associés à ce projet, facilitant ainsi le déploiement, la gestion et la compréhension de l'ensemble de l'architecture.
 
 ## Descriptions des fichiers fournis
 
@@ -15,29 +15,13 @@ L'arborescence du repository est conçue de manière à faciliter le déploiemen
     - **deploy.sh** : Un script pour lancer le déploiement du cluster GKE.
     - **terraform** : Ce répertoire contient les configurations Terraform pour la création de l'infrastructure GCP, y compris le réseau VPC, le pare-feu, le service account, et le cluster GKE lui-même.
     - **terraform-destroy.sh** : Un script pour détruire l'infrastructure créée avec Terraform.
-- `kubernetes` : Ce répertoire inclut les configurations Kubernetes pour le déploiement des différentes applications, telles que Elasticsearch, Filebeat, Kibana, Logstash, et Nginx.
-  - **
+- `kubernetes` : Ce répertoire inclut les configurations Kubernetes pour le déploiement des différentes applications, telles que Elasticsearch, Filebeat, Kibana, Logstash, et Nginx :
+  - **app** : Contient les configurations Kubernetes pour le déploiement de l'application, avec des fichiers YAML décrivant le déploiement et le service.
+  - **elasticsearch, filebeat, kibana, logstash, nginx** : Ces répertoires contiennent les configurations Kubernetes spécifiques à chaque composant de la suite Elastic.
+  - **values.yaml** : Un fichier de valeurs pour la configuration globale utilisé dans les déploiements Helm.
 - `logging-schema` : Contient un schéma de la centralisation des logs au format PDF, facilitant la compréhension de l'architecture.
-
 - `screenshots` : Capture d'écran des différents affichages et tableaux de bord liés aux logs et à la gestion des métriques du cluster.
-
 - `tp_5_logging.pdf` : Le document PDF associé au TP sur le monitoring avec des explications détaillées.
-
-- `deploy-dev, deploy-prod, deploy-test` : Répertoires pour le déploiement dans différents environnements
-    - **ansible** : Répertoire contenant des configurations et des scripts Ansible pour le déploiement et la configurations des VMs et Cluster déployés.
-    - **terraform** : Répertoire contenant des configurations Terraform pour le provisionnement d'infrastructures dans les différents environnements.
-    - **deploy.sh** : Un script pour déployer votre application en utilisant Terraform et Ansible.
-    - **terraform-destroy.sh** : Un script pour détruire l'infrastructure créée avec Terraform.
-    - **credentials.json** : Fichier de configuration contenant des informations d'identification pour se connecter a votre compte GCP
-    - **creation-inventory.sh** : Un script pour générer un fichier d'inventaire Ansible à partir de votre infrastructure.
-- `.gitlab-ci.yml` : ce fichier définit les étapes du pipeline CI/CD (retrieve_image/check_vulnerabilities/deploy/retrieve_ip_and_port/functional_test/generate_)
-- `configure_runner.sh`: Un script shell pour automatiser la configuration d'un GitLab Runner.
-- `docker-compose.yml` : ce fichier définit les 2 conteneurs (gitlab et gitlab-runner) nécessaires pour exécuter le pipeline CI/CD.
-- `pipeline-cd-schema/pipeline-cd.jpg` : Schéma visuel de la pipeline d'intégration continue CI/CD.
-- `build-image-devops.sh` : Script shell pour automatiser la construction d'une image Docker custom avec tous les outils DevOps pour l'utiliser dans l'a chaîne de déploiement CICD.
-- `Dockerfile` : fichier de build pour l'image Docker Custom DevOps
-- `tp_4_CD.pdf` : Document de présentation du TP4.
-
 
 
 ``` shell
@@ -121,9 +105,9 @@ L'arborescence du repository est conçue de manière à faciliter le déploiemen
 21 directories, 58 files
 ```
 
-## Schéma visuel d'un pipeline d'intégration continue
+## Schéma visuel de la solution de monitoring ELK
 
-![pipeline-cd](pipeline-cd-schema/pipeline-cd.jpg)
+![pipeline-cd](logging-schema/centralisation-logs.drawio.pdf)
 
 ## Configuration des paramètres
 
