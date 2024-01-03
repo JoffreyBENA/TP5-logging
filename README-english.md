@@ -197,10 +197,11 @@ This strategy allows for sufficient log retention for retrospective analysis wit
 Feel free to customize file names and configurations according to the specific needs of your environment. Also, be sure to replace <file.yaml> with the actual file names for deployment in the documentation.
 
 ---
-To retrieve logs from the deployed Nginx application in your GKE Kubernetes cluster, as well as logs from other applications that will be added in the future, follow these steps:
+## 7. To retrieve logs from the deployed Nginx application in your GKE Kubernetes cluster, as well as logs from other applications that will be added in the future, follow these steps:
 
-- Configuration of Filebeat for Nginx logs:
-- Deploy Filebeat using a DaemonSet to ensure it is present on each cluster node.
+  - Configuration of Filebeat for Nginx logs:
+  - Deploy Filebeat using a DaemonSet to ensure it is present on each cluster node.
+
 Configure Filebeat to collect Nginx logs by adding an Nginx module to its configuration. Here is an example configuration in the file filebeat-config.yaml:
 
 ```yaml
@@ -225,21 +226,21 @@ filebeat.yml: |-
 
 Ensure that Nginx logs are stored in the /var/log/nginx/ directory on each node. Adjust the path in the configuration if necessary.
 
-1) Filebeat Configuration for Future Application Logs:
+### 1. Filebeat Configuration for Future Application Logs:
 When deploying new applications in your cluster, configure Filebeat to collect their logs in the same way as for Nginx. You can add new modules or specific configurations for each application.
 
-1) Logstash Configuration:
+### 2. Logstash Configuration:
 In Logstash, configure pipelines to process logs based on their type (e.g., Nginx, other_application).
 Ensure that Logstash is configured to accept data from Filebeat via port 5044, as indicated in the Filebeat configuration.
 
-1) Deployment of Applications:
+### 3. Deployment of Applications:
 Deploy your applications in the Kubernetes cluster using appropriate YAML deployment files.
 Ensure that the logs of these applications are stored in directories accessible by Filebeat on the nodes.
 With this configuration, Filebeat will collect logs from Nginx and other applications present on each node of the Kubernetes cluster. The logs will then be sent to Logstash for processing. You can also add new modules or specific configurations as you deploy new applications in the cluster.
 
 To store the logs of each application in its own index and configure a Logstash pipeline for each application, follow these steps:
 
-4) Create a Logstash pipeline for each application:
+### 4. Create a Logstash pipeline for each application:
 Each Logstash pipeline should be configured to process logs from a specific application. You can create a separate Logstash configuration file for each pipeline. Here is an example Logstash configuration file for Nginx (nginx-pipeline.conf):
 
 ``` yaml
@@ -270,16 +271,16 @@ In this file, the pipeline receives data from Filebeat agents via port 5044.
 It applies a filter specific to Nginx logs using Grok.
 Finally, it sends the processed data to Elasticsearch in a specific index.
 
-5) Create an Elasticsearch index template:
+### 5. Create an Elasticsearch index template:
 To store logs in separate indexes per application, you need to define an Elasticsearch index template. The template determines the structure and settings of the index. You can create a custom template for each application or use predefined templates based on your needs.
 
-6) Documentation on Adding New Applications:
+### 6. Documentation on Adding New Applications:
 To allow the easy integration of new applications into the existing log collection system, provide documentation describing the following steps:
 
-- Creating a Logstash configuration file specific to the application.
-- Configuring appropriate Logstash filters and outputs for the application.
-- Creating an Elasticsearch index template for the application, if necessary.
-- Deploying the application in the Kubernetes cluster, ensuring that logs are stored in the correct location.
-- Be sure to include concrete examples in your documentation to demonstrate how to configure Logstash and Filebeat for a new application.
+  - Creating a Logstash configuration file specific to the application.
+  - Configuring appropriate Logstash filters and outputs for the application.
+  - Creating an Elasticsearch index template for the application, if necessary.
+  - Deploying the application in the Kubernetes cluster, ensuring that logs are stored in the correct location.
+  - Be sure to include concrete examples in your documentation to demonstrate how to configure Logstash and Filebeat for a new application.
 
 This documentation will enable teams responsible for new applications to seamlessly integrate into the existing log collection system.
