@@ -152,45 +152,45 @@ ENJOY !
 
 # Other Methods:
 
-1) Description of Provided Files:
+## 1. Description of Provided Files:
 
-- elasticsearch-deployment.yaml: Deployment file for Elasticsearch.
-- elasticsearch-service.yaml: Service file for Elasticsearch.
-- logstash-deployment.yaml: Deployment file for Logstash.
-- logstash-configmap.yaml: Configuration file for Logstash.
-- filebeat-deployment.yaml: Deployment file for Filebeat.
-- filebeat-configmap.yaml: Configuration file for Filebeat.
-- nginx-logstash-pipeline.conf: Logstash pipeline file for the Nginx application.
+   - elasticsearch-deployment.yaml: Deployment file for Elasticsearch.
+   - elasticsearch-service.yaml: Service file for Elasticsearch.
+   - logstash-deployment.yaml: Deployment file for Logstash.
+   - logstash-configmap.yaml: Configuration file for Logstash.
+   - filebeat-deployment.yaml: Deployment file for Filebeat.
+   - filebeat-configmap.yaml: Configuration file for Filebeat.
+   - nginx-logstash-pipeline.conf: Logstash pipeline file for the Nginx application.
 
-2) Prerequisites Description:
+## 2. Prerequisites Description:
 
-- Ensure you have an operational Kubernetes cluster ready to receive new deployments.
-- Ensure you have the necessary rights and permissions to deploy resources in the cluster.
+   - Ensure you have an operational Kubernetes cluster ready to receive new deployments.
+   - Ensure you have the necessary rights and permissions to deploy resources in the cluster.
 
-3) How to Deploy the Centralized Logging Solution:
+## 3. How to Deploy the Centralized Logging Solution:
 
-    a- Apply the deployment files for Elasticsearch, Logstash, and Filebeat using the command `kubectl apply -f <file.yaml>` for each file.
-    b- Apply the configuration files for Logstash and Filebeat using the command `kubectl apply -f <file.yaml>` for each file.
-    c- Verify that the deployments are correctly started using `kubectl get pods`.
+  - Apply the deployment files for Elasticsearch, Logstash, and Filebeat using the command `kubectl apply -f <file.yaml>` for each file.
+  - Apply the configuration files for Logstash and Filebeat using the command `kubectl apply -f <file.yaml>` for each file.
+  - Verify that the deployments are correctly started using `kubectl get pods`.
 
-5) How to Deploy the Nginx Application:
+## 4. How to Deploy the Nginx Application:
 
-    a- Apply the deployment file for the Nginx application using the command `kubectl apply -f <file.yaml>`.
-    b- Verify that the deployment is correctly started using `kubectl get pods`.
-    6- How to Add New Applications to Log Centralization:
+  - Apply the deployment file for the Nginx application using the command `kubectl apply -f <file.yaml>`.
+  - Verify that the deployment is correctly started using `kubectl get pods`.
+  - How to Add New Applications to Log Centralization:
 
-To add new applications to log centralization, follow these steps:
+## 5. To add new applications to log centralization, follow these steps:
 
-    a- Create a new Logstash pipeline file for the desired application, similar to nginx-logstash-pipeline.conf.
-    b- Modify the filebeat-configmap.yaml file to include the new log paths for the application.
-    c- Apply the changes using `kubectl apply -f <file.yaml>` for each file.
+  - Create a new Logstash pipeline file for the desired application, similar to nginx-logstash-pipeline.conf.
+  - Modify the filebeat-configmap.yaml file to include the new log paths for the application.
+  - Apply the changes using `kubectl apply -f <file.yaml>` for each file.
 
-7) Presentation and Justification of Log Storage and Rotation Strategy:
+## 6. Presentation and Justification of Log Storage and Rotation Strategy:
 
 We have chosen a log storage and rotation strategy based on the following operational criteria:
 
-- Application logs will be retained for 30 days.
-- Container logs will be retained for 7 days.
+  - Application logs will be retained for 30 days.
+  - Container logs will be retained for 7 days.
 
 This strategy allows for sufficient log retention for retrospective analysis without causing unnecessary storage overload.
 
@@ -228,11 +228,11 @@ Ensure that Nginx logs are stored in the /var/log/nginx/ directory on each node.
 1) Filebeat Configuration for Future Application Logs:
 When deploying new applications in your cluster, configure Filebeat to collect their logs in the same way as for Nginx. You can add new modules or specific configurations for each application.
 
-2) Logstash Configuration:
+1) Logstash Configuration:
 In Logstash, configure pipelines to process logs based on their type (e.g., Nginx, other_application).
 Ensure that Logstash is configured to accept data from Filebeat via port 5044, as indicated in the Filebeat configuration.
 
-3) Deployment of Applications:
+1) Deployment of Applications:
 Deploy your applications in the Kubernetes cluster using appropriate YAML deployment files.
 Ensure that the logs of these applications are stored in directories accessible by Filebeat on the nodes.
 With this configuration, Filebeat will collect logs from Nginx and other applications present on each node of the Kubernetes cluster. The logs will then be sent to Logstash for processing. You can also add new modules or specific configurations as you deploy new applications in the cluster.
