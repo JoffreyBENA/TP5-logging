@@ -107,7 +107,7 @@ L'arborescence du repository est conçue de manière à faciliter le déploiemen
 
 ## Schéma visuel de la solution de monitoring ELK
 
-![logging-schema](logging-schema/centralisation-logs.drawio.svg)
+        ![logging-schema](logging-schema/centralisation-logs.drawio.svg)
 
 ## Comment déployer ELK et les applications dans le cluster :
 
@@ -144,6 +144,8 @@ Le script bash `deploy.sh` est un script de déploiement automatisé pour déplo
 - dans 'Where to add this integration': cliquer sur l'onglet `'Existing hosts'` et sélectionner `'Elastic Agent on ECK policy'`
   
 - cliquer sur hamburger, scroll down jusqu'a management, cliquer sur integration, cliquer sur `installer d'integration`, cliquer sur `Nginx`, cliquer sur `integration policies`, cliquer sur `nginx advanced options` , dans le champ Ignore events older than mettre la durée pour laquelle vous voulez conserver les logs ici 72h.
+
+![screenshot2](screenshots/Affichage-Logs-NGINX.png)
 
 ENJOY !
 
