@@ -149,6 +149,8 @@ Le script bash `deploy.sh` est un script de déploiement automatisé pour déplo
 
 ENJOY !
 
+---
+
 # Autres méthodes :
 
 1- Description des fichiers fournis :
@@ -206,7 +208,6 @@ Déployez Filebeat en utilisant un DaemonSet pour qu'il soit présent sur chaque
 Configurez Filebeat pour collecter les journaux de Nginx en ajoutant un module Nginx à sa configuration. Voici un exemple de configuration dans le fichier filebeat-config.yaml :
 
     ```yaml
-    Copy code
     apiVersion: v1
     kind: ConfigMap
     metadata:
@@ -228,7 +229,7 @@ Configurez Filebeat pour collecter les journaux de Nginx en ajoutant un module N
 
 Assurez-vous que les journaux Nginx sont stockés dans le répertoire /var/log/nginx/ sur chaque nœud. Vous pouvez ajuster le chemin dans la configuration si nécessaire.
 
-2. Configuration de Filebeat pour les futurs journaux d'applications :
+1. Configuration de Filebeat pour les futurs journaux d'applications :
 
 Lorsque vous déployez de nouvelles applications dans votre cluster, configurez Filebeat pour collecter leurs journaux de la même manière que pour Nginx. Vous pouvez ajouter de nouveaux modules ou des configurations spécifiques pour chaque application.
 
@@ -278,6 +279,7 @@ Chaque pipeline Logstash doit être configuré pour traiter les journaux d'une a
 Dans ce fichier, le pipeline reçoit des données des agents Filebeat via le port 5044.
 Il applique un filtre spécifique aux journaux Nginx en utilisant Grok.
 Enfin, il envoie les données traitées à Elasticsearch dans un index spécifique.
+
 2. Créez un modèle d'index Elasticsearch :
 
 Pour que les journaux soient stockés dans des index distincts par application, vous devez définir un modèle d'index Elasticsearch. Le modèle détermine la structure et les paramètres de l'index. Vous pouvez créer un modèle personnalisé pour chaque application ou utiliser des modèles prédéfinis en fonction de vos besoins.
@@ -286,8 +288,10 @@ Pour que les journaux soient stockés dans des index distincts par application, 
 
 Pour permettre l'ajout de nouvelles applications dans le cluster avec un minimum d'effort, fournissez une documentation décrivant les étapes suivantes :
 
-Création d'un fichier de configuration Logstash spécifique à l'application.
-Configuration des filtres et des sorties Logstash appropriés pour l'application.
-Création d'un modèle d'index Elasticsearch pour l'application, si nécessaire.
-Déploiement de l'application dans le cluster Kubernetes en veillant à ce que les journaux soient stockés au bon emplacement.
-Assurez-vous d'inclure des exemples concrets dans votre documentation pour montrer comment configurer Logstash et Filebeat pour une nouvelle application. Cette documentation permettra aux équipes responsables des nouvelles applications de s'intégrer facilement dans le système de collecte de journaux existant.
+- Création d'un fichier de configuration Logstash spécifique à l'application.
+- Configuration des filtres et des sorties Logstash appropriés pour l'application.
+- Création d'un modèle d'index Elasticsearch pour l'application, si nécessaire.
+- Déploiement de l'application dans le cluster Kubernetes en veillant à ce que les journaux soient stockés au bon emplacement.
+- Assurez-vous d'inclure des exemples concrets dans votre documentation pour montrer comment configurer Logstash et Filebeat pour une nouvelle application. 
+
+Cette documentation permettra aux équipes responsables des nouvelles applications de s'intégrer facilement dans le système de collecte de journaux existant.
