@@ -71,8 +71,8 @@ fi
 # Vérification de la présence des fichiers Terraform
 if [ ! -d "terraform" ] || [ ! -f "terraform/variables.tf" ] || [ ! -f "terraform/main.tf" ] || [ ! -f "terraform/vpc/variables.tf" ] || [ ! -f "terraform/vpc/main.tf" ] || [ ! -f "terraform/gke-cluster/variables.tf" ] || [ ! -f "terraform/gke-cluster/main.tf" ] || [ ! -f "terraform/service_account/variables.tf" ] || [ ! -f "terraform/service_account/main.tf" ] || [ ! -f "terraform/firewall/variables.tf" ] || [ ! -f "terraform/firewall/main.tf" ]; then
     echo -e "\033[33mCertains fichiers Terraform sont manquants. Clonage du référentiel...\033[0m"
-    git clone https://gitlab.com/JoffreyBENA/TP4-CD.git
-    cd TP4-CD/deploy-prod/terraform
+    git clone https://gitlab.com/JoffreyBENA/TP5-logging.git
+    cd TP5-logging/deploy-gke-cluster/terraform
 else
     cd terraform
 fi
