@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: mon-app-container
-          image: gcr.io/exalted-airfoil-402614/joffreyb/imagepythontp3-gitlabci:v1.0  # Remplacez ceci par le chemin de votre image GCR.
+          image: gcr.io/ace-scarab-411621/joffreyb/imagepythontp3-gitlabci:v1.0  # Remplacez ceci par le chemin de votre image GCR.
           ports:
             - containerPort: 8080  # Port sur lequel votre application écoute.
           env:
@@ -49,7 +49,7 @@ spec:
 #     spec:
 #       containers:
 #       - name: "imagepythontp3-gitlabci-1"
-#         image: "gcr.io/exalted-airfoil-402614/joffreyb/imagepythontp3-gitlabci:v1.0"
+#         image: "gcr.io/ace-scarab-411621/joffreyb/imagepythontp3-gitlabci:v1.0"
 #         resources:
 #           requests:
 #             memory: "64Mi"
